@@ -23,7 +23,7 @@
 
 #include <boost/bind.hpp>
 #include <Eigen/Eigen>
-#include <stdio.h>
+#include <stdio.h>  
 
 #include <geometry_msgs/PoseStamped.h>
 #include <mav_msgs/Actuators.h>
@@ -33,7 +33,7 @@
 #include <ros/callback_queue.h>
 #include <ros/ros.h>
 #include <trajectory_msgs/MultiDOFJointTrajectory.h>
-
+//below are the custom header files used 
 #include "rotors_control/common.h"
 #include "rotors_control/lee_position_controller.h"
 

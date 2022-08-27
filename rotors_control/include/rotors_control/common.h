@@ -69,7 +69,7 @@ struct EigenOdometry {
 };
 
 inline void eigenOdometryFromMsg(const nav_msgs::OdometryConstPtr& msg,
-                                 EigenOdometry* odometry) {
+                                  EigenOdometry* odometry) {
   odometry->position = mav_msgs::vector3FromPointMsg(msg->pose.pose.position);
   odometry->orientation = mav_msgs::quaternionFromMsg(msg->pose.pose.orientation);
   odometry->velocity = mav_msgs::vector3FromMsg(msg->twist.twist.linear);
