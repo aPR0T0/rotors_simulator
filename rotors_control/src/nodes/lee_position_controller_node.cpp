@@ -30,7 +30,7 @@ namespace rotors_control {
 LeePositionControllerNode::LeePositionControllerNode(
   const ros::NodeHandle& nh, const ros::NodeHandle& private_nh)
   :nh_(nh),
-   private_nh_(private_nh){
+  private_nh_(private_nh){
   InitializeParams();
 
   cmd_pose_sub_ = nh_.subscribe(
@@ -42,7 +42,7 @@ LeePositionControllerNode::LeePositionControllerNode(
       &LeePositionControllerNode::MultiDofJointTrajectoryCallback, this);
 
   odometry_sub_ = nh_.subscribe(mav_msgs::default_topics::ODOMETRY, 1,
-                               &LeePositionControllerNode::OdometryCallback, this);
+                                &LeePositionControllerNode::OdometryCallback, this);
 
   motor_velocity_reference_pub_ = nh_.advertise<mav_msgs::Actuators>(
       mav_msgs::default_topics::COMMAND_ACTUATORS, 1);
@@ -53,9 +53,9 @@ LeePositionControllerNode::LeePositionControllerNode(
 
 LeePositionControllerNode::~LeePositionControllerNode() { }
 
-void LeePositionControllerNode::InitializeParams() {
+void LeePositionControllerNode::x() {
 
-  // Read parameters from rosparam.
+  // Read parameters from rosparam. which is declared in the rotors_gazebo > resource > $<vehicle name>.yaml and lee_controller_$<vehicle name>.yaml
   GetRosParameter(private_nh_, "position_gain/x",
                   lee_position_controller_.controller_parameters_.position_gain_.x(),
                   &lee_position_controller_.controller_parameters_.position_gain_.x());
@@ -93,6 +93,7 @@ void LeePositionControllerNode::InitializeParams() {
                   lee_position_controller_.controller_parameters_.angular_rate_gain_.z(),
                   &lee_position_controller_.controller_parameters_.angular_rate_gain_.z());
   GetVehicleParameters(private_nh_, &lee_position_controller_.vehicle_parameters_);
+  //the below initialization is done in the custom header files
   lee_position_controller_.InitializeParameters();
 }
 void LeePositionControllerNode::Publish() {
@@ -181,15 +182,15 @@ void LeePositionControllerNode::OdometryCallback(const nav_msgs::OdometryConstPt
   Eigen::VectorXd ref_rotor_velocities;
   lee_position_controller_.CalculateRotorVelocities(&ref_rotor_velocities);
 
-  // Todo(ffurrer): Do this in the conversions header.
+  //Todo(ffurrer): Do this in the conversions header.
   mav_msgs::ActuatorsPtr actuator_msg(new mav_msgs::Actuators);
 
   actuator_msg->angular_velocities.clear();
   for (int i = 0; i < ref_rotor_velocities.size(); i++)
-    actuator_msg->angular_velocities.push_back(ref_rotor_velocities[i]);
+    actuator_msg->angular_velocities.push_back(ref_rotor_velocities[i]);//so we have here calculated all rotor velocities using the allocation matrix
   actuator_msg->header.stamp = odometry_msg->header.stamp;
 
-  motor_velocity_reference_pub_.publish(actuator_msg);
+  motor_velocity_reference_pub_.publish(actuator_msg);// here it is publishing the actuator message
 }
 
 }

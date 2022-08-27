@@ -31,7 +31,7 @@ struct Rotor {
         direction(1) {}
   Rotor(double _angle, double _arm_length,
         double _rotor_force_constant, double _rotor_moment_constant,
-        int _direction)
+        int _direction)  //constructor
       : angle(_angle),
         arm_length(_arm_length),
         rotor_force_constant(_rotor_force_constant),
@@ -70,13 +70,13 @@ struct RotorConfiguration {
 };
 
 class VehicleParameters {
- public:
+public:
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
   VehicleParameters()
       : mass_(kDefaultMass),
         gravity_(kDefaultGravity),
         inertia_(Eigen::Vector3d(kDefaultInertiaXx, kDefaultInertiaYy,
-                                 kDefaultInertiaZz).asDiagonal()) {}
+                                  kDefaultInertiaZz).asDiagonal()) {}
   double mass_;
   const double gravity_;
   Eigen::Matrix3d inertia_;
